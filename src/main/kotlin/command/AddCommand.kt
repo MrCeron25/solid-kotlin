@@ -10,7 +10,7 @@ class AddCommand(
     override val name: String = "add",
     override val description: String = "Команда добавления"
 ) : Command {
-    fun execute(arguments: List<String>) {
+    override fun execute(arguments: List<String>) {
         if (arguments.size == 6) {
             val res = repository.add(studentFactory.create {
                 surname = arguments[1]

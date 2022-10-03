@@ -7,5 +7,3 @@ S
 #src/main/kotlin/parser/ArgParser.kt,4\f\4ff086ba8e5290a39dfd951c8f68b5c0ca33cb17
 Y
 )src/main/kotlin/dataBase/PrintDataBase.kt,d\0\d0678d9814f2cd6629f200747dff4c3c02b247c4
-T
-$src/main/kotlin/command/Commander.kt,0\d\0d9ac6cdf05aac158b50ada07ef2221ca6335a77

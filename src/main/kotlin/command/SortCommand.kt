@@ -11,9 +11,9 @@ class SortCommand(
     override val description: String = "Команда сортировки"
 ) : Command {
     // /change 1 qwe asd grte 456 m
-    fun execute(arguments: List<String>) {
-        if (arguments.size == 2) {
-            val index = arguments[1].toIntOrNull()
+    override fun execute(args: List<String>) {
+        if (args.size == 2) {
+            val index = args[1].toIntOrNull()
             if (index != null) {
                 repository.sortWith(compareBy {
                     when (index) {

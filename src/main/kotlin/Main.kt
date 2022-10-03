@@ -55,21 +55,21 @@ fun main() {
         sex = Sex.MAN
     })
 
-    printDataBase.print(repository)
+    printCommand.execute()
 
     var inputResult = readln().trim().lowercase(Locale.getDefault())
     while (true) {
-        val arguments = inputResult.split(' ').filter { it.isNotEmpty() }
+        val args = inputResult.split(' ').filter { it.isNotEmpty() }
         when {
-            inputResult.startsWith("/add") -> addCommand.execute(arguments)
+            inputResult.startsWith("/add") -> addCommand.execute(args)
 
-            inputResult.startsWith("/change") -> changeCommand.execute(arguments)
+            inputResult.startsWith("/change") -> changeCommand.execute(args)
 
-            inputResult.startsWith("/del") -> deleteCommand.execute(arguments)
+            inputResult.startsWith("/del") -> deleteCommand.execute(args)
 
-            inputResult.startsWith("/sort") -> sortCommand.execute(arguments)
+            inputResult.startsWith("/sort") -> sortCommand.execute(args)
 
-            inputResult.startsWith("/search") -> searchCommand.execute(arguments)
+            inputResult.startsWith("/search") -> searchCommand.execute(args)
 
             inputResult == "/print" -> printCommand.execute()
 

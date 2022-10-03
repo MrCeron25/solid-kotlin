@@ -9,9 +9,9 @@ class DeleteCommand(
     override val description: String = "Команда удаления"
 ) : Command {
     // /del 1
-    fun execute(arguments: List<String>) {
-        if (arguments.size == 2) {
-            val index = arguments[1].toIntOrNull()
+    override fun execute(args: List<String>) {
+        if (args.size == 2) {
+            val index = args[1].toIntOrNull()
             if (index != null) {
                 if (repository.delete(index)) {
                     println("Студент №$index удалён.")

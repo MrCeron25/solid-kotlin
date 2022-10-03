@@ -1,7 +1,7 @@
 package command
 
 interface Command {
-    fun execute() {}
+    fun execute(args: List<String> = emptyList())
     val name: String
     val description: String
 }

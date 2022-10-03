@@ -14,7 +14,7 @@ class SearchCommand(
 ) : Command {
     // /search name=18
     // [name=<>] [surname=<>] [age=<int>] [sex=<M/W>]
-    fun execute(arguments: List<String>) {
+    override fun execute(arguments: List<String>) {
         //    println(argParser.parse("name=Art age=45"))
 
 
