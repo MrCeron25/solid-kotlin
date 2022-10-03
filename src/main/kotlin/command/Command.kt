@@ -1,7 +1,7 @@
 package command
 
 interface Command {
-    fun run() {}
+    fun execute() {}
     val name: String
     val description: String
 }

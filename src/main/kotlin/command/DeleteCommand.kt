@@ -5,11 +5,11 @@ import student.StudentImpl
 
 class DeleteCommand(
     private val repository: DataBaseImpl<StudentImpl>,
-    override val name: String = "change",
-    override val description: String = "Команда изменения"
+    override val name: String = "delete",
+    override val description: String = "Команда удаления"
 ) : Command {
     // /del 1
-    fun run(arguments: List<String>) {
+    fun execute(arguments: List<String>) {
         if (arguments.size == 2) {
             val index = arguments[1].toIntOrNull()
             if (index != null) {

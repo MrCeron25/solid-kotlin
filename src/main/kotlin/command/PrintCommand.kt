@@ -9,7 +9,7 @@ class PrintCommand<T : Any>(
     override val description: String = "Команда вывода"
 ) : Command {
 
-    override fun run() {
+    override fun execute() {
         printDataBase.print(dataBase)
     }
 

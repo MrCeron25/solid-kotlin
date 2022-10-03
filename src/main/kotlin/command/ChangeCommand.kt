@@ -11,7 +11,7 @@ class ChangeCommand(
     override val description: String = "Команда изменения"
 ) : Command {
     // /change 1 qwe asd grte 456 m
-    fun run(arguments: List<String>) {
+    fun execute(arguments: List<String>) {
         if (arguments.size == 7) {
             val index = arguments[1].toIntOrNull()
             if (index != null) {

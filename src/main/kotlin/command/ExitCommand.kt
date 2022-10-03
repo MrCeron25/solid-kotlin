@@ -6,7 +6,7 @@ class ExitCommand(
     override val name: String = "exit",
     override val description: String = "Команда выхода"
 ) : Command {
-    override fun run() {
+    override fun execute() {
         exitProcess(0)
     }
 }
