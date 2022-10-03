@@ -2,12 +2,14 @@ package command
 
 import student.StudentImpl
 import dataBase.DataBaseImpl
+import enums.CommandName
+import enums.Sex
 import factory.SimpleStudentFactory
 
 class ChangeCommand(
     private val repository: DataBaseImpl<StudentImpl>,
     private val studentFactory: SimpleStudentFactory,
-    override val name: String = "change",
+    override val name: String = CommandName.CHANGE.stringValue,
     override val description: String = "Команда изменения"
 ) : Command {
     // /change 1 qwe asd grte 456 m

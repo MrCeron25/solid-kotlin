@@ -1,6 +1,6 @@
 package student
 
-import Sex
+import enums.Sex
 
 data class StudentImpl(
     override var surname: String = "",

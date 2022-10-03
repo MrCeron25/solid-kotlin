@@ -1,6 +1,6 @@
 package student
 
-import Sex
+import enums.Sex
 
 interface Student {
     var surname: String

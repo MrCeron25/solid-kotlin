@@ -2,12 +2,13 @@ package command
 
 import dataBase.DataBaseImpl
 import dataBase.PrintDataBase
+import enums.CommandName
 import student.StudentImpl
 
 class SortCommand(
     private val repository: DataBaseImpl<StudentImpl>,
     private val printDataBase: PrintDataBase<StudentImpl>,
-    override val name: String = "sort",
+    override val name: String = CommandName.SORT.stringValue,
     override val description: String = "Команда сортировки"
 ) : Command {
     // /change 1 qwe asd grte 456 m

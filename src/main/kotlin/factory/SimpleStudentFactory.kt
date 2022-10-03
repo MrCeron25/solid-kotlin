@@ -12,7 +12,7 @@ class SimpleStudentFactory : StudentFactory<StudentImpl> {
 //            student.name = props["name"] as String
 //            student.patronymic = props["patronymic"] as String
 //            student.age = props["age"] as? Int ?: throw ClassCastException("Возраст должен быть целым числом")
-//            student.sex = props["sex"] as Sex
+//            student.sex = props["sex"] as enums.Sex
 //        } catch (error: ClassCastException) {
 //            println("Ошибка создания студента: \n${error.message}")
 //        }
@@ -24,7 +24,7 @@ class SimpleStudentFactory : StudentFactory<StudentImpl> {
 //                "name" to "Артём",
 //                "patronymic" to "Алексеев",
 //                "age" to 18,
-//                "sex" to Sex.WOMAN
+//                "sex" to enums.Sex.WOMAN
 //            )
 
     override fun create(builder: StudentImpl.() -> Unit) = StudentImpl().apply(builder)

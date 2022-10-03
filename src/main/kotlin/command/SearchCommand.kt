@@ -2,6 +2,7 @@ package command
 
 import dataBase.DataBaseImpl
 import dataBase.PrintDataBase
+import enums.CommandName
 import parser.ArgParser
 import student.StudentImpl
 
@@ -9,7 +10,7 @@ class SearchCommand(
     private val argParser: ArgParser,
     private val repository: DataBaseImpl<StudentImpl>,
     private val printDataBase: PrintDataBase<StudentImpl>,
-    override val name: String = "search",
+    override val name: String = CommandName.SEARCH.stringValue,
     override val description: String = "Команда поиска"
 ) : Command {
     // /search name=18
@@ -37,7 +38,7 @@ class SearchCommand(
 ////                        { !mapArgs.containsKey("name") || it.name == mapArgs.getValue("name") },
 ////                        { !mapArgs.containsKey("patronymic") || it.patronymic == mapArgs.getValue("patronymic") },
 ////                        { ageVal == null || it.age == ageVal },
-////                        { !mapArgs.containsKey("sex") || it.sex == Sex.parseSex(mapArgs.getValue("sex").toString()) },
+////                        { !mapArgs.containsKey("sex") || it.sex == enums.Sex.parseSex(mapArgs.getValue("sex").toString()) },
 //                all = false
 //            )
 //        }

@@ -1,84 +1,63 @@
 import command.*
+import commander.CommanderImpl
 import dataBase.DataBaseImpl
 import dataBase.PrintDataBase
+import enums.Sex
 import factory.SimpleStudentFactory
 import parser.ArgParserImpl
+import processing.CommandProcessingImpl
 import student.StudentImpl
-import java.util.*
 
 fun main() {
-    val repository = DataBaseImpl<StudentImpl>()
-    val printDataBase = PrintDataBase<StudentImpl>()
     val studentFactory = SimpleStudentFactory()
+    val repository = DataBaseImpl<StudentImpl>().apply {
+        add(studentFactory.create {
+            surname = "Алексеев"
+            name = "Артём"
+            patronymic = "Анатольевич"
+            age = 18
+            sex = Sex.WOMAN
+        })
+        add(studentFactory.create {
+            surname = "Сергей"
+            name = "Самохин"
+            patronymic = "Витальевич"
+            age = 91
+            sex = Sex.WOMAN
+        })
+        add(studentFactory.create {
+            surname = "Иван"
+            name = "Курилин"
+            patronymic = "Павлович"
+            age = 48
+            sex = Sex.MAN
+        })
+    }
+    val printDataBase = PrintDataBase<StudentImpl>()
     val argParser = ArgParserImpl()
-    val printCommander = PrintCommander()
 
+    //region Commands
     val exitCommand = ExitCommand()
-    val printCommand = PrintCommand(repository, printDataBase)
+    val deleteCommand = DeleteCommand(repository)
     val addCommand = AddCommand(repository, studentFactory)
     val changeCommand = ChangeCommand(repository, studentFactory)
-    val deleteCommand = DeleteCommand(repository)
+    val printCommand = PrintCommand(repository, printDataBase)
     val sortCommand = SortCommand(repository, printDataBase)
     val searchCommand = SearchCommand(argParser, repository, printDataBase)
+    //endregion
 
-    val commander = CommanderImpl().apply {
-        add(exitCommand)
-        add(printCommand)
-        add(addCommand)
-        add(changeCommand)
-        add(deleteCommand)
-        add(sortCommand)
-        add(searchCommand)
+    val commander = CommanderImpl<Command>().apply {
+        addCommand(exitCommand)
+        addCommand(deleteCommand)
+        addCommand(addCommand)
+        addCommand(changeCommand)
+        addCommand(printCommand)
+        addCommand(sortCommand)
+        addCommand(searchCommand)
     }
-// executer
-// CommandDispatcher
 
-    repository.add(studentFactory.create {
-        surname = "Алексеев"
-        name = "Артём"
-        patronymic = "Алексеев"
-        age = 18
-        sex = Sex.WOMAN
-    })
-    repository.add(studentFactory.create {
-        surname = "Сергей"
-        name = "Самохин"
-        patronymic = "Витальевич"
-        age = 91
-        sex = Sex.WOMAN
-    })
-    repository.add(studentFactory.create {
-        surname = "Иван"
-        name = "Курилин"
-        patronymic = "Павлович"
-        age = 48
-        sex = Sex.MAN
-    })
+    val commandProcessing = CommandProcessingImpl(commander)
+    // CommandDispatcher
 
-    printCommand.execute()
-
-    var inputResult = readln().trim().lowercase(Locale.getDefault())
-    while (true) {
-        val args = inputResult.split(' ').filter { it.isNotEmpty() }
-        when {
-            inputResult.startsWith("/add") -> addCommand.execute(args)
-
-            inputResult.startsWith("/change") -> changeCommand.execute(args)
-
-            inputResult.startsWith("/del") -> deleteCommand.execute(args)
-
-            inputResult.startsWith("/sort") -> sortCommand.execute(args)
-
-            inputResult.startsWith("/search") -> searchCommand.execute(args)
-
-            inputResult == "/print" -> printCommand.execute()
-
-            inputResult == "/help" -> printCommander.print(commander)
-
-            inputResult == "/exit" -> exitCommand.execute()
-
-            else -> println("Команда не найдена. Введите /help для справки.")
-        }
-        inputResult = readln().trim().lowercase(Locale.getDefault())
-    }
+    commandProcessing.processing()
 }
