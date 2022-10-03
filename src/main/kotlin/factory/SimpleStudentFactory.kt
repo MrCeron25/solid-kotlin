@@ -1,13 +1,13 @@
 package factory
 
-import StudentImpl
+import student.StudentImpl
 
 class SimpleStudentFactory : StudentFactory<StudentImpl> {
 
-//    fun create(props: Map<String, *>): StudentImpl {
-//        var student: StudentImpl? = null
+//    fun create(props: Map<String, *>): student.StudentImpl {
+//        var student: student.StudentImpl? = null
 //        try {
-//            student = StudentImpl()
+//            student = student.StudentImpl()
 //            student.surname = props["surname"] as String
 //            student.name = props["name"] as String
 //            student.patronymic = props["patronymic"] as String

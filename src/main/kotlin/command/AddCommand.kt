@@ -1,12 +1,12 @@
 package command
 
-import StudentImpl
+import student.StudentImpl
 import dataBase.DataBaseImpl
 import factory.SimpleStudentFactory
 
 class AddCommand(
-    private val studentFactory: SimpleStudentFactory,
     private val repository: DataBaseImpl<StudentImpl>,
+    private val studentFactory: SimpleStudentFactory,
     override val name: String = "add",
     override val description: String = "Команда добавления"
 ) : Command {
@@ -28,6 +28,4 @@ class AddCommand(
             println("Ошибка добавления. Пример : \"/add surname name patronymic age(Int) sex(M/W)\"")
         }
     }
-
-    override fun run() {}
 }

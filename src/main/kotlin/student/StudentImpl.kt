@@ -1,3 +1,7 @@
+package student
+
+import Sex
+
 data class StudentImpl(
     override var surname: String = "",
     override var name: String = "",

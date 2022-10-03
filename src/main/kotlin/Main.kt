@@ -1,10 +1,9 @@
-import command.CommanderImpl
-import command.ExitCommand
-import command.PrintCommand
+import command.*
 import dataBase.DataBaseImpl
 import dataBase.PrintDataBase
 import factory.SimpleStudentFactory
 import parser.ArgParserImpl
+import student.StudentImpl
 import java.util.*
 import kotlin.reflect.full.memberProperties
 
@@ -13,16 +12,23 @@ fun main() {
     val printDataBase = PrintDataBase<StudentImpl>()
     val studentFactory = SimpleStudentFactory()
     val argParser = ArgParserImpl()
-
-    val commander = CommanderImpl().apply {
-        add(ExitCommand())
-        add(PrintCommand(repository, printDataBase))
-    }
+    val printCommander = PrintCommander()
 
     val exitCommand = ExitCommand()
     val printCommand = PrintCommand(repository, printDataBase)
+    val addCommand = AddCommand(repository, studentFactory)
+    val changeCommand = ChangeCommand(repository, studentFactory)
+    val deleteCommand = DeleteCommand(repository)
 
-// !!!executer!!!
+    val commander = CommanderImpl().apply {
+        add(exitCommand)
+        add(printCommand)
+        add(addCommand)
+        add(changeCommand)
+        add(deleteCommand)
+    }
+// executer
+// CommandDispatcher
 
     repository.add(studentFactory.create {
         surname = "Алексеев"
@@ -54,67 +60,11 @@ fun main() {
     while (true) {
         val arguments = inputResult.split(' ').filter { it.isNotEmpty() }
         when {
-            inputResult.startsWith("/add") -> {
-                if (arguments.size == 6) {
-                    val res = repository.add(studentFactory.create {
-                        surname = arguments[1]
-                        name = arguments[2]
-                        patronymic = arguments[3]
-                        age = arguments[4].toIntOrNull()
-                        sex = Sex.parseSex(arguments[5])
-                    })
-                    if (res) {
-                        println("Студент добавлен : ${repository.data.last()}")
-                    } else {
-                        println("Ошибка добавления.")
-                    }
-                } else {
-                    println("Ошибка добавления. Пример : \"/add surname name patronymic age(Int) sex(M/W)\"")
-                }
-            }
+            inputResult.startsWith("/add") -> addCommand.run(arguments)
 
-            inputResult.startsWith("/replace") -> {
-                if (arguments.size == 7) {
-                    val index = arguments[1].toIntOrNull()
-                    if (index != null) {
-                        val res = repository.replace(index, studentFactory.create {
-                            surname = arguments[2]
-                            name = arguments[3]
-                            patronymic = arguments[4]
-                            age = arguments[5].toIntOrNull()
-                            sex = Sex.parseSex(arguments[6])
-                        })
-                        if (res) {
-                            println("Студент №$index изменён : ${repository.data[index - 1]}")
-                        } else {
-                            println("Ошибка изменения.")
-                        }
-                    } else {
-                        println("Ошибка ввода номера записи.")
-                    }
-                } else {
-                    println(
-                        "Ошибка изменения. Пример : \"/replace replaceIndex surname" + " name patronymic age(Int) sex(M/W)\""
-                    )
-                }
-            }
+            inputResult.startsWith("/change") -> changeCommand.run(arguments)
 
-            inputResult.startsWith("/del") -> {
-                if (arguments.size == 2) {
-                    val index = arguments[1].toIntOrNull()
-                    if (index != null) {
-                        if (repository.delete(index)) {
-                            println("Студент №$index удалён.")
-                        } else {
-                            println("Ошибка удаления.")
-                        }
-                    } else {
-                        println("Ошибка ввода номера записи.")
-                    }
-                } else {
-                    println("Ошибка удаления. Пример : \"/del deleteIndex\"")
-                }
-            }
+            inputResult.startsWith("/del") -> deleteCommand.run(arguments)
 
             inputResult.startsWith("/sort") -> {
                 if (arguments.size == 2) {
@@ -167,13 +117,7 @@ fun main() {
 
             inputResult == "/print" -> printCommand.run()
 
-            inputResult == "/help" -> {
-                println("HELP")
-//                println("Add.info")
-//                println("Sort.info")
-//                println("Replace.info")
-//                println("Search.info")
-            }
+            inputResult == "/help" -> printCommander.print(commander)
 
             inputResult == "/exit" -> exitCommand.run()
 

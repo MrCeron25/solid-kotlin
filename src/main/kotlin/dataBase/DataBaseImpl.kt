@@ -14,7 +14,7 @@ class DataBaseImpl<T : Any> : DataBase<T> {
         return this::class.members.toList()
     }
 
-    override fun replace(index: Int, item: T): Boolean {
+    override fun change(index: Int, item: T): Boolean {
         return if ((_data.size > 0) and (index - 1 in 0 until _data.size)) {
             _data.removeAt(index - 1)
             _data.add(index - 1, item)

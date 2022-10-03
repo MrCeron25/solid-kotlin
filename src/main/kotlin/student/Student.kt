@@ -1,3 +1,7 @@
+package student
+
+import Sex
+
 interface Student {
     var surname: String
     var name: String

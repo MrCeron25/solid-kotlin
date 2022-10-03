@@ -1,6 +1,6 @@
 package factory
 
-import Student
+import student.Student
 
 interface StudentFactory<T : Student> {
     fun create(builder: T.() -> Unit): T
