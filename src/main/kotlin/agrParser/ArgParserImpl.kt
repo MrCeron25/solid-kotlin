@@ -1,7 +1,7 @@
-package parser
+package agrParser
 
 class ArgParserImpl : ArgParser {
-    override fun parse(args: List<String>): Map<String, Any> {
+    override fun parse(args: List<String>): Map<String, String> {
         return args
             .filter { it.isNotEmpty() }
             .map { it.split("=") }

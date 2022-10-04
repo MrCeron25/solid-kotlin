@@ -5,8 +5,6 @@ interface Command {
     val description: String
     val example: String
     val neededNumberArgs: Int
-//    val nameWithSlash: String
-//        get() = "/$name"
 
     fun getInfo(): String = "$name - $description. Пример : $example."
 
