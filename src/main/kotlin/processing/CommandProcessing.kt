@@ -1,6 +1,6 @@
 package processing
 
-import command.Command
+import commands.Command
 import commander.CommanderImpl
 
 interface CommandProcessing {

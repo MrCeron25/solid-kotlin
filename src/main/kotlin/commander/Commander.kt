@@ -1,12 +1,12 @@
 package commander
 
-import command.Command
+import commands.Command
 import enums.CommandName
 
 interface Commander<T : Command> {
     fun addCommand(command: T): Boolean
 
-    fun getCommandByCommandName(commandName: CommandName): T?
+    fun getCommandByCommandName(commandName: CommandName): T
 
     val commands: MutableList<T>
 }

@@ -1,6 +1,6 @@
 package processing
 
-import command.Command
+import commands.Command
 import commander.CommanderImpl
 import commander.PrintCommander
 import enums.CommandName
@@ -14,29 +14,45 @@ class CommandProcessingImpl(
 
     override fun processing() {
         execute(CommandName.PRINT)
-        var inputResult = readln().trim().lowercase(Locale.getDefault())
+        var inputResult = readln().trim()
         while (true) {
-            val args = inputResult.split(' ').filter { it.isNotEmpty() }
+            var args = inputResult.split(' ').filter { it.isNotEmpty() }
+            args = args.slice(1 until args.size)
+
+//            val command = commander.commands.find { it.nameWithSlash.startsWith(inputResult) }
+//            if (command != null) {
+//                execute(command.name, args)
+//            } else println("Команда не найдена. Введите /help для справки.")
+
+//            println("args=${args}")
             when {
-                inputResult.startsWith("/add") -> execute(CommandName.ADD, args)
+                inputResult.startsWith(CommandName.ADD.stringValue, true) ->
+                    execute(CommandName.ADD, args)
 
-                inputResult.startsWith("/change") -> execute(CommandName.CHANGE, args)
+                inputResult.startsWith(CommandName.CHANGE.stringValue, true) ->
+                    execute(CommandName.CHANGE, args)
 
-                inputResult.startsWith("/del") -> execute(CommandName.DELETE, args)
+                inputResult.startsWith(CommandName.DELETE.stringValue, true) ->
+                    execute(CommandName.DELETE, args)
 
-                inputResult.startsWith("/sort") -> execute(CommandName.SORT, args)
+                inputResult.startsWith(CommandName.SORT.stringValue, true) ->
+                    execute(CommandName.SORT, args)
 
-                inputResult.startsWith("/search") -> execute(CommandName.SEARCH, args)
+                inputResult.startsWith(CommandName.SEARCH.stringValue, true) ->
+                    execute(CommandName.SEARCH, args)
 
-                inputResult == "/print" -> execute(CommandName.PRINT)
+                inputResult.lowercase(Locale.getDefault()) ==
+                        CommandName.PRINT.stringValue -> execute(CommandName.PRINT)
 
-                inputResult == "/help" -> printCommander.print(commander)
+                inputResult.lowercase(Locale.getDefault()) ==
+                        CommandName.EXIT.stringValue -> execute(CommandName.EXIT)
 
-                inputResult == "/exit" -> execute(CommandName.EXIT)
+                inputResult.lowercase(Locale.getDefault()) ==
+                        CommandName.HELP.stringValue -> printCommander.print(commander)
 
-                else -> println("Команда не найдена. Введите /help для справки.")
+                else -> println("Команда не найдена. Введите ${CommandName.HELP.stringValue} для справки.")
             }
-            inputResult = readln().trim().lowercase(Locale.getDefault())
+            inputResult = readln().trim()
         }
     }
 

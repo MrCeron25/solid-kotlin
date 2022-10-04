@@ -1,5 +1,5 @@
 package parser
 
 interface ArgParser {
-    fun parse(string: String): Map<String, Any>
+    fun parse(args: List<String>): Map<String, Any>
 }

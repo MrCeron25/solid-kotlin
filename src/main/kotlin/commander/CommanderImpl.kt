@@ -1,6 +1,6 @@
 package commander
 
-import command.Command
+import commands.Command
 import enums.CommandName
 
 class CommanderImpl<T : Command>(

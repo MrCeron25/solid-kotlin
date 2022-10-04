@@ -1,4 +1,4 @@
-package command
+package commands
 
 import dataBase.DataBaseImpl
 import dataBase.PrintDataBase
@@ -9,12 +9,15 @@ class SortCommand(
     private val repository: DataBaseImpl<StudentImpl>,
     private val printDataBase: PrintDataBase<StudentImpl>,
     override val name: String = CommandName.SORT.stringValue,
-    override val description: String = "Команда сортировки"
+    override val description: String = "Команда сортировки",
+    override val example: String = "${CommandName.SORT.stringValue} sortField",
+    override val neededNumberArgs: Int = 1
 ) : Command {
-    // /change 1 qwe asd grte 456 m
+    // /sort 1
     override fun execute(args: List<String>) {
-        if (args.size == 2) {
-            val index = args[1].toIntOrNull()
+        if (args.size == neededNumberArgs) {
+            val(_index) = args
+            val index = _index.toIntOrNull()
             if (index != null) {
                 repository.sortWith(compareBy {
                     when (index) {
@@ -31,7 +34,7 @@ class SortCommand(
                 println("Ошибка ввода поля сортировки.")
             }
         } else {
-            println("Ошибка сортировки. Пример : \"/sort sortIndex\"")
+            println("Ошибка параметров. Пример $example.")
         }
     }
 }

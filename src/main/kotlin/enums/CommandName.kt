@@ -7,5 +7,6 @@ enum class CommandName(val stringValue: String) {
     PRINT("print"),
     DELETE("del"),
     SEARCH("search"),
-    SORT("sort")
+    SORT("sort"),
+    HELP("help")
 }

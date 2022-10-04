@@ -1,10 +1,9 @@
-import command.*
 import commander.CommanderImpl
+import commands.*
 import dataBase.DataBaseImpl
 import dataBase.PrintDataBase
 import enums.Sex
 import factory.SimpleStudentFactory
-import parser.ArgParserImpl
 import processing.CommandProcessingImpl
 import student.StudentImpl
 
@@ -34,7 +33,6 @@ fun main() {
         })
     }
     val printDataBase = PrintDataBase<StudentImpl>()
-    val argParser = ArgParserImpl()
 
     //region Commands
     val exitCommand = ExitCommand()
@@ -43,7 +41,7 @@ fun main() {
     val changeCommand = ChangeCommand(repository, studentFactory)
     val printCommand = PrintCommand(repository, printDataBase)
     val sortCommand = SortCommand(repository, printDataBase)
-    val searchCommand = SearchCommand(argParser, repository, printDataBase)
+    val searchCommand = SearchCommand(repository, printDataBase)
     //endregion
 
     val commander = CommanderImpl<Command>().apply {
