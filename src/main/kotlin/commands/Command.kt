@@ -1,5 +1,7 @@
 package commands
 
+import context.Context
+
 interface Command {
     val name: String
     val description: String
@@ -8,5 +10,5 @@ interface Command {
 
     fun getInfo(): String = "$name - $description. Пример: \'$example\'."
 
-    fun execute(args: List<String> = emptyList())
+    fun execute(context: Context, args: List<String> = emptyList())
 }

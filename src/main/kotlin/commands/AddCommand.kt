@@ -1,24 +1,20 @@
 package commands
 
+import context.Context
 import enums.CommandNames
-import student.StudentImpl
-import dataBase.DataBaseImpl
 
 import enums.Sex
-import factory.SimpleStudentFactory
 
 class AddCommand(
-    private val repository: DataBaseImpl<StudentImpl>,
-    private val studentFactory: SimpleStudentFactory,
     override val name: String = CommandNames.ADD,
     override val description: String = "Команда добавления",
     override val example: String = "${CommandNames.ADD} surname name patronymic age(Int) sex(m/w)",
     override val neededNumberArgs: Int = 5
 ) : Command {
-    override fun execute(args: List<String>) {
+    override fun execute(context: Context, args: List<String>) {
         if (args.size == neededNumberArgs) {
             val (_surname, _name, _patronymic, _age, _sex) = args
-            val res = repository.add(studentFactory.create {
+            val res = context.dataBase.add(context.studentFactory.create {
                 surname = _surname
                 name = _name
                 patronymic = _patronymic
@@ -26,7 +22,7 @@ class AddCommand(
                 sex = Sex.parseSex(_sex)
             })
             if (res) {
-                println("Студент добавлен : ${repository.data.last()}.")
+                println("Студент добавлен : ${context.dataBase.data.last()}.")
             } else {
                 println("Ошибка добавления.")
             }

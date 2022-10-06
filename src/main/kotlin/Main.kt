@@ -10,7 +10,7 @@ import student.StudentImpl
 
 fun main() {
     val studentFactory = SimpleStudentFactory()
-    val repository = DataBaseImpl<StudentImpl>().apply {
+    val dataBase = DataBaseImpl<StudentImpl>().apply {
         add(studentFactory.create {
             surname = "Алексеев"
             name = "Артём"
@@ -35,16 +35,16 @@ fun main() {
     }
     val printStudentDataBase = PrintStudentDataBase<StudentImpl>()
 
-//    val context = ContextImpl(repository, simpleStudentFactory,printDataBase)
+    val context = ContextImpl(dataBase, studentFactory, printStudentDataBase)
 
     //region Commands
     val exitCommand = ExitCommand()
-    val deleteCommand = DeleteCommand(repository)
-    val addCommand = AddCommand(repository, studentFactory)
-    val changeCommand = ChangeCommand(repository, studentFactory)
-    val printCommand = PrintCommand(repository, printStudentDataBase)
-    val sortCommand = SortCommand(repository, printStudentDataBase)
-    val searchCommand = SearchCommand(repository, printStudentDataBase)
+    val deleteCommand = DeleteCommand()
+    val addCommand = AddCommand()
+    val changeCommand = ChangeCommand()
+    val printCommand = PrintCommand()
+    val sortCommand = SortCommand()
+    val searchCommand = SearchCommand()
     //endregion
 
     val commandManager = CommandManagerImpl<Command>().apply {
@@ -59,6 +59,6 @@ fun main() {
     val helpCommand = HelpCommand(commandManager.commands.values.toList())
     commandManager.addCommand(helpCommand)
 
-    val commandProcessing = CommandProcessingImpl(commandManager)
+    val commandProcessing = CommandProcessingImpl(context, commandManager)
     commandProcessing.processing()
 }

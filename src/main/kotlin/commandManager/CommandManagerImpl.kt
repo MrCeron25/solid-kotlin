@@ -1,6 +1,7 @@
 package commandManager
 
 import commands.Command
+import context.Context
 import enums.CommandNames
 import exception.CommandExecutionException
 
@@ -14,10 +15,10 @@ class CommandManagerImpl<T : Command>(
         } else throw Error("Команда с именем \'${command.name}\' уже есть.")
     }
 
-    override fun tryExecute(args: List<String>) {
+    override fun tryExecute(context: Context, args: List<String>) {
         val firstArg = args.getOrNull(0) ?: throw CommandExecutionException(null)
         val command = commands[firstArg]
             ?: throw CommandExecutionException("Команда $firstArg не найдена. Введите ${CommandNames.HELP} для справки")
-        command.execute(args.slice(1 until args.size))
+        command.execute(context, args.slice(1 until args.size))
     }
 }

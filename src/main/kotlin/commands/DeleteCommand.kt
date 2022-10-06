@@ -1,23 +1,23 @@
 package commands
 
+import context.Context
 import enums.CommandNames
 import dataBase.DataBaseImpl
 import student.StudentImpl
 
 class DeleteCommand(
-    private val repository: DataBaseImpl<StudentImpl>,
     override val name: String = CommandNames.DELETE,
     override val description: String = "Команда удаления",
     override val example: String = "${CommandNames.DELETE} deleteIndex",
     override val neededNumberArgs: Int = 1
 ) : Command {
     // /del 1
-    override fun execute(args: List<String>) {
+    override fun execute(context: Context, args: List<String>) {
         if (args.size == neededNumberArgs) {
             val (_index) = args
             val index = _index.toIntOrNull()
             if (index != null) {
-                if (repository.delete(index)) {
+                if (context.dataBase.delete(index)) {
                     println("Студент №$index удалён.")
                 } else {
                     println("Ошибка удаления.")

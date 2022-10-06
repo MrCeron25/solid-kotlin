@@ -1,5 +1,6 @@
 package commands
 
+import context.Context
 import enums.CommandNames
 
 class HelpCommand(
@@ -10,7 +11,7 @@ class HelpCommand(
     override val neededNumberArgs: Int = 0
 ) : Command {
 
-    override fun execute(args: List<String>) {
+    override fun execute(context: Context, args: List<String>) {
         commands.forEach { println(it.getInfo()) }
     }
 

@@ -7,12 +7,16 @@ class PrintStudentDataBase<T : Student> {
         if (dataBase.data.isEmpty()) {
             println("База данных пуста.")
         } else {
-            println("№ | surname name patronymic age sex")
-            println("===================================")
+            val title = "№ | surname name patronymic age sex"
+            val aggregate = "==================================="
+//                { _: Char, n: Int -> (0 until n).fold("") { result, _ -> "$result=" } }
+            println(aggregate)
+            println(title)
+            println(aggregate)
             dataBase.data.forEachIndexed { index, obj ->
                 println("${index + 1} | $obj")
             }
-            println("===================================")
+            println(aggregate)
         }
     }
 }

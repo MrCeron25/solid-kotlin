@@ -1,26 +1,22 @@
 package commands
 
+import context.Context
 import enums.CommandNames
-import student.StudentImpl
-import dataBase.DataBaseImpl
 import enums.Sex
-import factory.SimpleStudentFactory
 
 class ChangeCommand(
-    private val repository: DataBaseImpl<StudentImpl>,
-    private val studentFactory: SimpleStudentFactory,
     override val name: String = CommandNames.CHANGE,
     override val description: String = "Команда изменения",
     override val example: String = "${CommandNames.CHANGE} changeIndex surname name patronymic age(Int) sex(m/w)",
     override val neededNumberArgs: Int = 6
 ) : Command {
     // /change 1 qwe asd zxc 456 m
-    override fun execute(args: List<String>) {
+    override fun execute(context: Context, args: List<String>) {
         if (args.size == neededNumberArgs) {
             val (_index, _surname, _name, _patronymic, _age, _sex) = args
             val index = _index.toIntOrNull()
             if (index != null) {
-                val res = repository.change(index, studentFactory.create {
+                val res = context.dataBase.change(index, context.studentFactory.create {
                     surname = _surname
                     name = _name
                     patronymic = _patronymic
@@ -28,7 +24,7 @@ class ChangeCommand(
                     sex = Sex.parseSex(_sex)
                 })
                 if (res) {
-                    println("Студент №$index изменён : ${repository.data[index - 1]}")
+                    println("Студент №$index изменён : ${context.dataBase.data[index - 1]}")
                 } else {
                     println("Ошибка изменения.")
                 }
