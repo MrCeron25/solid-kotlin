@@ -1,11 +1,12 @@
 package context
 
 import dataBase.DataBaseImpl
-import dataBase.PrintDataBase
+import dataBase.PrintStudentDataBase
 import factory.SimpleStudentFactory
+import student.StudentImpl
 
-class Context<T : Any> {
-    val repository = DataBaseImpl<T>()
-    val studentFactory = SimpleStudentFactory()
-    val printDataBase = PrintDataBase<T>()
+interface Context {
+    val repository: DataBaseImpl<StudentImpl>
+    val simpleStudentFactory: SimpleStudentFactory
+    val printStudentDataBase: PrintStudentDataBase<StudentImpl>
 }

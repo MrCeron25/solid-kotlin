@@ -1,16 +1,16 @@
 package commands
 
+import enums.CommandNames
 import dataBase.DataBaseImpl
-import dataBase.PrintDataBase
-import enums.CommandName
+import dataBase.PrintStudentDataBase
 import student.StudentImpl
 
 class SortCommand(
     private val repository: DataBaseImpl<StudentImpl>,
-    private val printDataBase: PrintDataBase<StudentImpl>,
-    override val name: String = CommandName.SORT.stringValue,
+    private val printDataBase: PrintStudentDataBase<StudentImpl>,
+    override val name: String = CommandNames.SORT,
     override val description: String = "Команда сортировки",
-    override val example: String = "${CommandName.SORT.stringValue} sortField",
+    override val example: String = "${CommandNames.SORT} sortField(1..5)",
     override val neededNumberArgs: Int = 1
 ) : Command {
     // /sort 1

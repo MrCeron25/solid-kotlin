@@ -1,14 +1,14 @@
 package commands
 
+import enums.CommandNames
 import dataBase.DataBaseImpl
-import enums.CommandName
 import student.StudentImpl
 
 class DeleteCommand(
     private val repository: DataBaseImpl<StudentImpl>,
-    override val name: String = CommandName.DELETE.stringValue,
+    override val name: String = CommandNames.DELETE,
     override val description: String = "Команда удаления",
-    override val example: String = "${CommandName.DELETE.stringValue} deleteIndex",
+    override val example: String = "${CommandNames.DELETE} deleteIndex",
     override val neededNumberArgs: Int = 1
 ) : Command {
     // /del 1

@@ -1,6 +1,8 @@
 package dataBase
 
-class DataBaseImpl<T : Any> : DataBase<T> {
+import student.Student
+
+class DataBaseImpl<T : Student> : DataBase<T> {
     private val _data = mutableListOf<T>()
 
     override val data: List<T>
@@ -42,7 +44,9 @@ class DataBaseImpl<T : Any> : DataBase<T> {
 //                    predicates.all { it(elem).also { println("$it $elem") } }
                     predicates.all { it(elem) }
                 }
-            if (pass) newArr.add(elem)
+            if (pass) {
+                newArr.add(elem)
+            }
         }
         return newArr
     }

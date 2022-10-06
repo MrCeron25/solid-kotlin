@@ -1,15 +1,16 @@
 package commands
 
+import enums.CommandNames
 import dataBase.DataBase
-import dataBase.PrintDataBase
-import enums.CommandName
+import dataBase.PrintStudentDataBase
+import student.StudentImpl
 
-class PrintCommand<T : Any>(
-    private val dataBase: DataBase<T>,
-    private val printDataBase: PrintDataBase<T>,
-    override val name: String = CommandName.PRINT.stringValue,
+class PrintCommand(
+    private val dataBase: DataBase<StudentImpl>,
+    private val printDataBase: PrintStudentDataBase<StudentImpl>,
+    override val name: String = CommandNames.PRINT,
     override val description: String = "Команда вывода",
-    override val example: String = CommandName.PRINT.stringValue,
+    override val example: String = CommandNames.PRINT,
     override val neededNumberArgs: Int = 0
 ) : Command {
 

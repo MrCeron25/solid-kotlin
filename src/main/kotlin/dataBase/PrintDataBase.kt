@@ -1,6 +1,8 @@
 package dataBase
 
-class PrintDataBase<T> {
+import student.Student
+
+class PrintStudentDataBase<T : Student> {
     fun print(dataBase: DataBase<T>) {
         if (dataBase.data.isEmpty()) {
             println("База данных пуста.")

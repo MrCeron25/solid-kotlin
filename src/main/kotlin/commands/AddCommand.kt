@@ -1,17 +1,18 @@
 package commands
 
+import enums.CommandNames
 import student.StudentImpl
 import dataBase.DataBaseImpl
-import enums.CommandName
+
 import enums.Sex
 import factory.SimpleStudentFactory
 
 class AddCommand(
     private val repository: DataBaseImpl<StudentImpl>,
     private val studentFactory: SimpleStudentFactory,
-    override val name: String = CommandName.ADD.stringValue,
+    override val name: String = CommandNames.ADD,
     override val description: String = "Команда добавления",
-    override val example: String = "${CommandName.ADD.stringValue} surname name patronymic age(Int) sex(m/w)",
+    override val example: String = "${CommandNames.ADD} surname name patronymic age(Int) sex(m/w)",
     override val neededNumberArgs: Int = 5
 ) : Command {
     override fun execute(args: List<String>) {

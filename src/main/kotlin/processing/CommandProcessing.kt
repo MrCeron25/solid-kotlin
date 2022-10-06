@@ -1,9 +1,9 @@
 package processing
 
+import commandManager.CommandManager
 import commands.Command
-import commander.CommanderImpl
 
 interface CommandProcessing {
-    val commander: CommanderImpl<Command>
+    val commandManager: CommandManager<Command>
     fun processing()
 }

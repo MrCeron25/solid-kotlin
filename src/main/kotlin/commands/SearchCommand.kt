@@ -1,21 +1,21 @@
 package commands
 
 import dataBase.DataBaseImpl
-import dataBase.PrintDataBase
-import enums.CommandName
 import agrParser.ArgParser
 import agrParser.ArgParserImpl
+import dataBase.PrintStudentDataBase
+import enums.CommandNames
 import enums.Sex
 import student.StudentImpl
 import kotlin.reflect.full.memberProperties
 
 class SearchCommand(
     private val repository: DataBaseImpl<StudentImpl>,
-    private val printDataBase: PrintDataBase<StudentImpl>,
+    private val printDataBase: PrintStudentDataBase<StudentImpl>,
     private val argParser: ArgParser = ArgParserImpl(),
-    override val name: String = CommandName.SEARCH.stringValue,
+    override val name: String = CommandNames.SEARCH,
     override val description: String = "Команда поиска",
-    override val example: String = "${CommandName.SEARCH.stringValue} age=18",
+    override val example: String = "${CommandNames.SEARCH} fieldName=fieldValue",
     override val neededNumberArgs: Int = 0
 ) : Command {
     // search age=18
@@ -29,15 +29,24 @@ class SearchCommand(
 //            println("studentProps=${studentProps}")
             val mapArgs = argParser.parse(args).filter { it.key in studentProps }
             if (mapArgs.isNotEmpty()) {
-                println("mapArgs=${mapArgs}")
+//                println("mapArgs=${mapArgs}")
+                // booleanVariable = if (booleanMethod()) exp else true;
+                // booleanVariable = !booleanMethod() || exp;
                 val result = repository.search(
-                    { it.surname == mapArgs["surname"] },
-                    { it.name == mapArgs["name"] },
-                    { it.patronymic == mapArgs["patronymic"] },
-                    { it.age == mapArgs["age"].toString().toIntOrNull() },
-                    { it.sex == Sex.parseSex(mapArgs["sex"].toString()) }
+                    { mapArgs["surname"] == null || it.surname == mapArgs["surname"] },
+                    { mapArgs["name"] == null || it.name == mapArgs["name"] },
+                    { mapArgs["patronymic"] == null || it.patronymic == mapArgs["patronymic"] },
+                    { mapArgs["age"] == null || it.age == mapArgs["age"].toString().toIntOrNull() },
+                    {
+                        mapArgs["sex"] == null || it.sex ==
+                                Sex.parseSex(mapArgs["sex"].toString())
+                    }
                 )
-                result.forEach { println(it) }
+                if (result.isNotEmpty()) {
+                    result.forEach { println(it) }
+                } else {
+                    println("Записи не найдены.")
+                }
             } else {
                 println("Параметры не найдены.")
             }

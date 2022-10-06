@@ -1,62 +1,26 @@
 package processing
 
+import commandManager.CommandManagerImpl
 import commands.Command
-import commander.CommanderImpl
-import commander.PrintCommander
-import enums.CommandName
-import java.util.*
-
+import enums.CommandNames
+import exception.CommandExecutionException
 
 class CommandProcessingImpl(
-    override val commander: CommanderImpl<Command> = CommanderImpl(),
-    private val printCommander: PrintCommander = PrintCommander()
+    override val commandManager: CommandManagerImpl<Command>
 ) : CommandProcessing {
 
     override fun processing() {
-        execute(CommandName.PRINT)
-        var inputResult = readln().trim()
+        commandManager.tryExecute(CommandNames.PRINT.split(" ").filter { it.isNotEmpty() })
+        commandManager.tryExecute(CommandNames.HELP.split(" ").filter { it.isNotEmpty() })
         while (true) {
-            var args = inputResult.split(' ').filter { it.isNotEmpty() }
-            args = args.slice(1 until args.size)
-
-//            val command = commander.commands.find { it.nameWithSlash.startsWith(inputResult) }
-//            if (command != null) {
-//                execute(command.name, args)
-//            } else println("Команда не найдена. Введите /help для справки.")
-
-//            println("args=${args}")
-            when {
-                inputResult.startsWith(CommandName.ADD.stringValue, true) ->
-                    execute(CommandName.ADD, args)
-
-                inputResult.startsWith(CommandName.CHANGE.stringValue, true) ->
-                    execute(CommandName.CHANGE, args)
-
-                inputResult.startsWith(CommandName.DELETE.stringValue, true) ->
-                    execute(CommandName.DELETE, args)
-
-                inputResult.startsWith(CommandName.SORT.stringValue, true) ->
-                    execute(CommandName.SORT, args)
-
-                inputResult.startsWith(CommandName.SEARCH.stringValue, true) ->
-                    execute(CommandName.SEARCH, args)
-
-                inputResult.lowercase(Locale.getDefault()) ==
-                        CommandName.PRINT.stringValue -> execute(CommandName.PRINT)
-
-                inputResult.lowercase(Locale.getDefault()) ==
-                        CommandName.EXIT.stringValue -> execute(CommandName.EXIT)
-
-                inputResult.lowercase(Locale.getDefault()) ==
-                        CommandName.HELP.stringValue -> printCommander.print(commander)
-
-                else -> println("Команда не найдена. Введите ${CommandName.HELP.stringValue} для справки.")
+            val inputResult = readln().trim()
+            try {
+                commandManager.tryExecute(inputResult.split(" ").filter { it.isNotEmpty() })
+            } catch (e: CommandExecutionException) {
+                if (e.message == null) continue
+                println(e.message)
             }
-            inputResult = readln().trim()
         }
     }
-
-    private fun execute(commandName: CommandName, args: List<String> = emptyList()) {
-        commander.getCommandByCommandName(commandName).execute(args)
-    }
 }
+

@@ -1,12 +1,12 @@
 package commands
 
-import enums.CommandName
+import enums.CommandNames
 import kotlin.system.exitProcess
 
 class ExitCommand(
-    override val name: String = CommandName.EXIT.stringValue,
+    override val name: String = CommandNames.EXIT,
     override val description: String = "Команда выхода",
-    override val example: String = CommandName.EXIT.stringValue,
+    override val example: String = CommandNames.EXIT,
     override val neededNumberArgs: Int = 0
 ) : Command {
     override fun execute(args: List<String>) {

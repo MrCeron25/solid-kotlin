@@ -1,7 +1,8 @@
-import commander.CommanderImpl
+import commandManager.CommandManagerImpl
 import commands.*
+import context.ContextImpl
 import dataBase.DataBaseImpl
-import dataBase.PrintDataBase
+import dataBase.PrintStudentDataBase
 import enums.Sex
 import factory.SimpleStudentFactory
 import processing.CommandProcessingImpl
@@ -32,19 +33,21 @@ fun main() {
             sex = Sex.MAN
         })
     }
-    val printDataBase = PrintDataBase<StudentImpl>()
+    val printStudentDataBase = PrintStudentDataBase<StudentImpl>()
+
+//    val context = ContextImpl(repository, simpleStudentFactory,printDataBase)
 
     //region Commands
     val exitCommand = ExitCommand()
     val deleteCommand = DeleteCommand(repository)
     val addCommand = AddCommand(repository, studentFactory)
     val changeCommand = ChangeCommand(repository, studentFactory)
-    val printCommand = PrintCommand(repository, printDataBase)
-    val sortCommand = SortCommand(repository, printDataBase)
-    val searchCommand = SearchCommand(repository, printDataBase)
+    val printCommand = PrintCommand(repository, printStudentDataBase)
+    val sortCommand = SortCommand(repository, printStudentDataBase)
+    val searchCommand = SearchCommand(repository, printStudentDataBase)
     //endregion
 
-    val commander = CommanderImpl<Command>().apply {
+    val commandManager = CommandManagerImpl<Command>().apply {
         addCommand(exitCommand)
         addCommand(deleteCommand)
         addCommand(addCommand)
@@ -53,9 +56,9 @@ fun main() {
         addCommand(sortCommand)
         addCommand(searchCommand)
     }
+    val helpCommand = HelpCommand(commandManager.commands.values.toList())
+    commandManager.addCommand(helpCommand)
 
-    val commandProcessing = CommandProcessingImpl(commander)
-    // CommandDispatcher
-
+    val commandProcessing = CommandProcessingImpl(commandManager)
     commandProcessing.processing()
 }
