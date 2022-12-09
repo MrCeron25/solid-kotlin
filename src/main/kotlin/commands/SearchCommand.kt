@@ -1,9 +1,12 @@
 package commands
 
-import agrParser.ArgParserImpl
 import context.Context
 import enums.CommandNames
 import enums.Sex
+import parsers.ArgParserImpl
+import parsers.IntParserImpl
+import parsers.Parser
+import parsers.SexParserImpl
 import student.StudentImpl
 import kotlin.reflect.full.memberProperties
 
@@ -11,12 +14,15 @@ class SearchCommand(
     override val name: String = CommandNames.SEARCH,
     override val description: String = "Команда поиска",
     override val example: String = "${CommandNames.SEARCH} fieldName=fieldValue",
-    override val neededNumberArgs: Int = 0
+    override val neededNumberArgs: Int = 0,
+    private val intParser: Parser<String, Int?> = IntParserImpl(),
+    private val sexParser: Parser<String, Sex> = SexParserImpl()
 ) : Command {
-    // search age=18
+    // search age=18  search surname=Алексеев age=18
     // [name=<>] [surname=<>] [age=<int>] [sex=<M/W>]
     override fun execute(context: Context, args: List<String>) {
         // search age=18
+        // search sex=MAN
 //        println(argParser.parse("name=Art age=45"))
         if (args.isNotEmpty()) {
 //            println("args=${args}")
@@ -27,16 +33,11 @@ class SearchCommand(
 //                println("mapArgs=${mapArgs}")
                 // booleanVariable = if (booleanMethod()) exp else true;
                 // booleanVariable = !booleanMethod() || exp;
-                val result = context.dataBase.search(
-                    { mapArgs["surname"] == null || it.surname == mapArgs["surname"] },
+                val result = context.dataBase.search({ mapArgs["surname"] == null || it.surname == mapArgs["surname"] },
                     { mapArgs["name"] == null || it.name == mapArgs["name"] },
                     { mapArgs["patronymic"] == null || it.patronymic == mapArgs["patronymic"] },
-                    { mapArgs["age"] == null || it.age == mapArgs["age"].toString().toIntOrNull() },
-                    {
-                        mapArgs["sex"] == null || it.sex ==
-                                Sex.parseSex(mapArgs["sex"].toString())
-                    }
-                )
+                    { mapArgs["age"] == null || it.age == intParser.parse(mapArgs["age"].toString()) },
+                    { mapArgs["sex"] == null || it.sex == sexParser.parse(mapArgs["sex"].toString()) })
                 if (result.isNotEmpty()) {
                     result.forEach { println(it) }
                 } else {

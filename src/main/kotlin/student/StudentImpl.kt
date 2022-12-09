@@ -6,7 +6,7 @@ data class StudentImpl(
     override var surname: String = "",
     override var name: String = "",
     override var patronymic: String? = "",
-    override var age: Int? = 0,
+    override var age: Int = 0,
     override var sex: Sex = Sex.UNDEFINED
 ) : Student {
 

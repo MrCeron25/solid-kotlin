@@ -1,4 +1,4 @@
-package agrParser
+package parsers
 
 class ArgParserImpl : ArgParser {
     override fun parse(args: List<String>): Map<String, String> {

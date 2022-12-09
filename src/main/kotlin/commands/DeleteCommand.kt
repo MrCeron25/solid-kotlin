@@ -2,23 +2,24 @@ package commands
 
 import context.Context
 import enums.CommandNames
-import dataBase.DataBaseImpl
-import student.StudentImpl
+import parsers.IntParserImpl
+import parsers.Parser
 
 class DeleteCommand(
     override val name: String = CommandNames.DELETE,
     override val description: String = "Команда удаления",
     override val example: String = "${CommandNames.DELETE} deleteIndex",
-    override val neededNumberArgs: Int = 1
+    override val neededNumberArgs: Int = 1,
+    private val intParser: Parser<String, Int?> = IntParserImpl()
 ) : Command {
     // /del 1
     override fun execute(context: Context, args: List<String>) {
         if (args.size == neededNumberArgs) {
             val (_index) = args
-            val index = _index.toIntOrNull()
-            if (index != null) {
-                if (context.dataBase.delete(index)) {
-                    println("Студент №$index удалён.")
+            val resIndex = intParser.parse(_index)
+            if (resIndex != null) {
+                if (context.dataBase.delete(resIndex)) {
+                    println("Студент №$resIndex удалён.")
                 } else {
                     println("Ошибка удаления.")
                 }

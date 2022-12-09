@@ -35,7 +35,7 @@ class DataBaseImpl<T : Student> : DataBase<T> {
 
 
     private fun <T> List<T>.filterAll(fair: Boolean = false, vararg predicates: (T) -> Boolean): List<T> {
-        val newArr = mutableListOf<T>()
+        val result = mutableListOf<T>()
         for (elem in this) {
             val pass =
                 if (fair) {
@@ -45,10 +45,10 @@ class DataBaseImpl<T : Student> : DataBase<T> {
                     predicates.all { it(elem) }
                 }
             if (pass) {
-                newArr.add(elem)
+                result.add(elem)
             }
         }
-        return newArr
+        return result
     }
 
     override fun sortWith(comparator: Comparator<in T>) = _data.sortWith(comparator)
